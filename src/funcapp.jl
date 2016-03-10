@@ -19,21 +19,27 @@ module funcapp
 		deg = n-1
 		lb,ub = (-3.0,3.0)
 		z = gausschebyshev(n)
-		xnodes = Float64[(z[1][i]+1)*(ub-lb) / 2 + lb for i=1:n]  # map z[-1,1] to x[a,b]
+		xnodes = Float64[(z[1][i]+1)*((ub-lb) / 2) + lb for i=1:n]  # map z[-1,1] to x[a,b]
 		y = f(xnodes)
-		Phi = Float64[cos((n-i+0.5)*(j-1)*pi/n) for i=1:n,j=1:(deg+1)]
+		# Phi = Float64[cos((n-i+0.5)*(j-1)*pi/n) for i=1:n,j=1:(deg+1)]
+		Phi = Float64[cos(acos(z[1][i])*j) for i=1:n,j=0:(deg)]
 		c = Phi \ y  # solve for coefficients by solving interpolation equation. type `?\` to find out more
-		n_new = 50
-		xnew = linspace(lb,ub,n_new) # get 50 linspace points 
+		n_new = 100
+		xnew = linspace(lb,ub,n_new) # get 100 linspace points 
 		# how to evaluate Phi at xnew?
 		# evaulate Cheby basis at the new poitns
 		Phi_xnew = Float64[ChebyT(unitmap(xnew[i],lb,ub),j) for i=1:n_new,j=0:deg]
 		ynew = Phi_xnew * c
 		ytrue = f(xnew)
+		figure("question 1")
+		subplot(121)
+		plot(xnew,ytrue,"+",color="red",label="truth")
+		plot(xnew,ynew,label="approx")
+		legend(loc="upper left")
 		# find maximal error
 		err = ynew - ytrue
 		# plot
-		figure()
+		subplot(122)
 		plot(1:n_new,err)
 		title("Cheby error")
 		return err
@@ -41,7 +47,7 @@ module funcapp
 
 	function q2(n)
 		# use ApproxFun.jl to do the same:
-		figure("simpleCheby with Approxfun")
+		figure("question 2")
 		x = ApproxFun.Fun(ApproxFun.Interval(-3,3.0))
 		lb,ub = (-3.0,3.0)
 		g = x + 2x^2 - exp(-x)
@@ -55,8 +61,10 @@ module funcapp
 	function q3()
 
 		n = 200
+		z = gausschebyshev(n)
 		m=9
-		Phi = Float64[cos((n-i+0.5)*(j-1)*pi/n) for i=1:n,j=1:m]
+		# Phi = Float64[cos((n-i+0.5)*(j-1)*pi/n) for i=1:n,j=0:(m-1)]
+		Phi = Float64[cos(acos(z[1][i])*j) for i=1:n,j=0:(m-1)]
 		fig,axes = subplots(3,3,figsize=(10,5))
 
 		for i in 1:3
@@ -64,7 +72,7 @@ module funcapp
 				ax = axes[j,i]
 				count = i+(j-1)*3
 
-				ax[:plot](Phi[:,count])
+				ax[:plot](z[1],Phi[:,count])
 				ax[:set_title]("Basis $(count-1)")
 				ax[:xaxis][:set_visible](false)
 				ax[:set_ylim](-1.1,1.1)
@@ -72,6 +80,7 @@ module funcapp
 				ax[:yaxis][:set_major_locator]=matplotlib[:ticker][:MultipleLocator](1)
 			end
 		end
+		fig[:canvas][:set_window_title]("question 3")
 		return fig
 	end
 
@@ -138,7 +147,7 @@ module funcapp
 		for j in 1:length(deg)
 			n = deg[j] + 1
 			z = gausschebyshev(n)
-			nodes = Float64[(z[1][i]+1)*(ub-lb) / 2 + lb for i=1:n]
+			nodes = Float64[(z[1][i]+1)*(ub-lb) / 2 + lb for i=1:n] # map [-1,1] -> [a,b]
 			C = ChebyType(nodes,deg[j],lb,ub,runge)
 			p = predict(C,xnew)
 			ax[:plot](xnew,p["preds"],label="deg=$(deg[j])",color=colors[j],lw=2)
@@ -146,6 +155,8 @@ module funcapp
 		ax[:legend](loc="upper center")	# add legend (taking labels)
 		ax[:grid]()
 		ax[:set_title]("Chebyshev Nodes")
+
+		fig[:canvas][:set_window_title]("question 4a")
 
 	end
 	
@@ -191,7 +202,7 @@ module funcapp
 		truth = runge(test_points);
 		e1 = getBasis(test_points,bs1) * c1 - truth;
 		e2 = getBasis(test_points,bs2) * c2 - truth;
-		figure(figsize=(8,7))
+		figure("question 4b",figsize=(8,7))
 		subplot(211)
 		plot(test_points,truth,lw=2)
 		ylim(-0.2,1.2)
@@ -235,7 +246,7 @@ module funcapp
 		e1 = p1 - truth;
 		e2 = p2 - truth;
 
-		fix,axes = subplots(1,3,figsize=(13,5))
+		fig,axes = subplots(1,3,figsize=(13,5))
 		ax = axes[1]
 		ax[:plot](test_points,truth,lw=2,color="black")
 		ax[:set_title]("truth")
@@ -255,6 +266,8 @@ module funcapp
 		ax[:plot](test_points,e1,label="equidistant",color="blue")
 		ax[:plot](test_points,e2,label="stacked",color="red")
 		ax[:set_title]("errors")
+
+		fig[:canvas][:set_window_title]("question 5")
 	end
 
 
