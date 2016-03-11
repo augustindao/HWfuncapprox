@@ -17,6 +17,7 @@ git fetch upstream
 
 # finally, to see the code on that branch, check it out:
 git checkout solution
+```
 
 
 ## License
