@@ -15,11 +15,6 @@ git remote add upstream https://github.com/ScPo-CompEcon/HW-funcapprox.git
 # next, get all branches on that remote
 git fetch upstream
 
-# have a look at all the available branches now:
-git branch 
-
-# can you see the solution branch?
-
 # finally, to see the code on that branch, check it out:
 git checkout solution
 
