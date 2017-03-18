@@ -4,7 +4,7 @@ module funcapp
 
 
 	using FastGaussQuadrature # to get chebyshevnodes
-	using PyPlot
+	using PyPlot  # PyPlot.jl
 	import ApproXD: getBasis, BSpline
 	using Distributions
 	using ApproxFun
@@ -47,13 +47,13 @@ module funcapp
 
 	function q2(n)
 		# use ApproxFun.jl to do the same:
-		figure("question 2")
-		x = ApproxFun.Fun(ApproxFun.Interval(-3,3.0))
-		lb,ub = (-3.0,3.0)
-		g = x + 2x^2 - exp(-x)
-		n_new = 50
-		xnew = linspace(lb,ub,n_new) # get 50 linspace points 
-		ApproxFun.plot(g)
+		# figure("question 2")
+		# x = ApproxFun.Fun(ApproxFun.Interval(-3,3.0))
+		# lb,ub = (-3.0,3.0)
+		# g = x + 2x^2 - exp(-x)
+		# n_new = 50
+		# xnew = linspace(lb,ub,n_new) # get 50 linspace points 
+		# plot(g)
 	end
 
 
@@ -226,23 +226,23 @@ module funcapp
 		lb,ub = (-1.0,1.0)
 		nknots = 13
 		deg = 3
-	    params1 = SplineParams(linspace(lb,ub,nknots),0,deg)  # 0: no derivative
-		nevals = 5 * length(params1.breaks) # get nBasis < nEvalpoints
+	    params1 = BSpline(nknots,deg,lb,ub)
+		nevals = 5 * params1.numKnots # get nBasis < nEvalpoints
 
-		# myknots
+		# myknots with knot multiplicity at 0
 		myknots = vcat(linspace(-1,-0.1,5),0,0,0,	linspace(0.1,1,5))
-	    params2 = SplineParams(myknots,0,deg)  # 0: no derivative
+	    params2 = BSpline(myknots,deg)  # 0: no derivative
 
 		# get coefficients for each case
 		eval_points = collect(linspace(lb,ub,nevals))  
-		c1 = CompEcon.evalbase(params1,eval_points)[1] \ f(eval_points)
-		c2 = CompEcon.evalbase(params2,eval_points)[1] \ f(eval_points)
+		c1 = getBasis(eval_points,params1) \ f(eval_points)
+		c2 = getBasis(eval_points,params2) \ f(eval_points)
 
 		# look at errors over entire interval
 		test_points = collect(linspace(lb,ub,1000));
 		truth = f(test_points);
-		p1 = CompEcon.evalbase(params1,test_points)[1] * c1;
-		p2 = CompEcon.evalbase(params2,test_points)[1] * c2;
+		p1 = getBasis(test_points,params1) * c1;
+		p2 = getBasis(test_points,params2) * c2;
 		e1 = p1 - truth;
 		e2 = p2 - truth;
 
