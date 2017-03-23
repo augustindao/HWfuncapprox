@@ -2,6 +2,22 @@
 
 [![Join the chat at https://gitter.im/ScPo-CompEcon/HW-funcapprox](https://badges.gitter.im/ScPo-CompEcon/HW-funcapprox.svg)](https://gitter.im/ScPo-CompEcon/HW-funcapprox?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Solutions
+
+![question 1](https://github.com/ScPo-CompEcon/HW-funcapprox/tree/solution/question_1.png)  
+
+  
+![question 3](https://github.com/ScPo-CompEcon/HW-funcapprox/tree/solution/question_3.png)  
+
+![question 4a](https://github.com/ScPo-CompEcon/HW-funcapprox/tree/solution/question_4a.png)  
+
+
+![question 4b](https://github.com/ScPo-CompEcon/HW-funcapprox/tree/solution/question_4b.png)  
+
+
+![question 5](https://github.com/ScPo-CompEcon/HW-funcapprox/tree/solution/question_5.png)  
+
+
 ## Solutions Branch: How to get this branch
 
 * you need to add this repo as a new `remote` on your computer

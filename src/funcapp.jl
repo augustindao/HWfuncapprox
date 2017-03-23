@@ -8,7 +8,6 @@ module funcapp
 	import ApproXD: getBasis, BSpline
 	using Distributions
 	using ApproxFun
-	using CompEcon
 
 	ChebyT(x,deg) = cos(acos(x)*deg)
 	unitmap(x,lb,ub) = 2.*(x.-lb)/(ub.-lb) - 1	#[a,b] -> [-1,1]
@@ -47,13 +46,13 @@ module funcapp
 
 	function q2(n)
 		# use ApproxFun.jl to do the same:
-		# figure("question 2")
+		# Ideally, you would be using Plots.jl here.
+		# then, this is just
 		# x = ApproxFun.Fun(ApproxFun.Interval(-3,3.0))
 		# lb,ub = (-3.0,3.0)
 		# g = x + 2x^2 - exp(-x)
-		# n_new = 50
-		# xnew = linspace(lb,ub,n_new) # get 50 linspace points 
 		# plot(g)
+		# I had problems with Plots.jl so used PyPlot directly.
 	end
 
 
