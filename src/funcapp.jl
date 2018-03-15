@@ -7,6 +7,8 @@ module funcapp
 
 	# use chebyshev to interpolate this:
 	function q1(n)
+
+		return Dict(:err => 1.0)
 		
 	end
 
