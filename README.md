@@ -1,7 +1,6 @@
 # Function Approximation Homework
 
-[![Build Status](https://travis-ci.org/ScPo-CompEcon/HW-funcapprox.svg?branch=master)](https://travis-ci.org/ScPo-CompEcon/HW-funcapprox)
-
+[![Build Status](https://travis-ci.org/ScPo-CompEcon/HWfuncapprox.svg?branch=master)](https://travis-ci.org/ScPo-CompEcon/HWfuncapprox)
 
 * please fork this repo
 * do your work, and submit a pull request by 24h before the next class.
